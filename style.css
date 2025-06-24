@@ -1,1 +1,322 @@
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0D0D0D;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+        }
+
+        /* Partículas de fundo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #5CE1E6;
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(13, 13, 13, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(92, 225, 230, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5CE1E6;
+            text-shadow: 0 0 10px rgba(92, 225, 230, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .control-btn {
+            background: rgba(92, 225, 230, 0.1);
+            border: 1px solid #5CE1E6;
+            color: #5CE1E6;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(92, 225, 230, 0.2);
+            box-shadow: 0 0 15px rgba(92, 225, 230, 0.3);
+        }
+
+        /* Galáxia */
+        .galaxy {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Planetas */
+        .planet {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(92, 225, 230, 0.4);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .planet:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(92, 225, 230, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(92, 225, 230, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(92, 225, 230, 0.6); }
+        }
+
+        /* Janelas flutuantes */
+        .window {
+            position: fixed;
+            background: rgba(13, 13, 13, 0.95);
+            border: 1px solid #5CE1E6;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(92, 225, 230, 0.3);
+            z-index: 100;
+            min-width: 300px;
+            min-height: 200px;
+            backdrop-filter: blur(10px);
+        }
+
+        .window-header {
+            background: rgba(92, 225, 230, 0.1);
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-bottom: 1px solid rgba(92, 225, 230, 0.2);
+        }
+
+        .window-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            color: #5CE1E6;
+        }
+
+        .window-close {
+            background: none;
+            border: none;
+            color: #ff4757;
+            font-size: 20px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .window-close:hover {
+            background: rgba(255, 71, 87, 0.2);
+        }
+
+        .window-content {
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        /* Ferramentas específicas */
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(92, 225, 230, 0.05);
+            border-radius: 8px;
+        }
+
+        .todo-input {
+            background: rgba(92, 225, 230, 0.1);
+            border: 1px solid #5CE1E6;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .todo-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .add-btn {
+            background: #22C55E;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #16a34a;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .timer-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            text-align: center;
+            color: #5CE1E6;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(92, 225, 230, 0.5);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .timer-btn {
+            background: rgba(92, 225, 230, 0.1);
+            border: 1px solid #5CE1E6;
+            color: #5CE1E6;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: rgba(92, 225, 230, 0.2);
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(92, 225, 230, 0.05);
+            border: 1px solid rgba(92, 225, 230, 0.3);
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .notes-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Menu contextual */
+        .context-menu {
+            position: fixed;
+            background: rgba(13, 13, 13, 0.95);
+            border: 1px solid #5CE1E6;
+            border-radius: 8px;
+            padding: 5px 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(92, 225, 230, 0.3);
+        }
+
+        .context-menu-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .context-menu-item:hover {
+            background: rgba(92, 225, 230, 0.1);
+            color: #5CE1E6;
+        }
+
+        /* Paleta de cores */
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #ffffff;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .planet {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+            
+            .window {
+                width: 90vw;
+                height: 70vh;
+                top: 15vh;
+                left: 5vw;
+            }
+        }
