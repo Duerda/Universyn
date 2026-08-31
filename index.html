@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080b1f">
-  <title>Universyn — Espaço de trabalho</title>
+  <meta name="description" content="Universyn — ferramentas para estudar no seu próprio universo.">
+  <title>Universyn — Seu universo de estudos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -16,54 +17,58 @@
   <div class="stars stars-back" aria-hidden="true"></div>
   <div class="stars stars-front" aria-hidden="true"></div>
 
-  <div class="app-shell workspace-app">
-    <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
-      <div class="sidebar-top">
-        <a class="brand" href="#workspace" aria-label="Universyn início"><span class="brand-mark"><span></span></span><span>universyn</span></a>
-        <button class="close-sidebar" id="close-sidebar" aria-label="Fechar menu">×</button>
-      </div>
-      <div class="sidebar-label">Espaço de trabalho</div>
-      <nav class="nav-list">
-        <a class="nav-link active" href="#workspace"><span class="nav-icon">✦</span><span>Meu universo</span></a>
-        <a class="nav-link" href="#tools-launch"><span class="nav-icon">◒</span><span>Ferramentas</span></a>
-      </nav>
-      <div class="sidebar-bottom">
-        <button class="nav-link ghost" id="reset-data"><span class="nav-icon">↻</span><span>Limpar dados locais</span></button>
-      </div>
-    </aside>
+  <div class="landing-shell">
+    <nav class="landing-nav" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Universyn início"><span class="brand-mark"><span></span></span><span>universyn</span></a>
+      <div class="landing-links"><a href="#como-funciona">Como funciona</a><a href="#ferramentas">Ferramentas</a><a href="#workspace">Seu espaço</a></div>
+      <a class="nav-cta" href="#workspace">Abrir espaço <span>↗</span></a>
+      <button class="mobile-menu landing-mobile-menu" id="mobile-menu" aria-label="Abrir menu">☰</button>
+    </nav>
 
-    <main class="main-content workspace-main" id="workspace">
-      <header class="topbar">
-        <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menu">☰</button>
-        <div class="breadcrumb"><span>Universyn</span><i>/</i> Espaço de trabalho</div>
-        <div class="top-actions"><span class="date-label" id="current-date"></span><span class="connection-status"><b></b> sistema online</span></div>
-      </header>
-
-      <section class="space-header">
-        <div><span class="eyebrow"><span class="spark">✦</span> MAPA ORBITAL</span><h1>Seu espaço.</h1><p>Mova as ferramentas, organize suas missões e estude no seu próprio universo.</p></div>
-        <div class="space-controls"><span class="drag-hint"><span class="drag-cursor">✣</span> arraste para organizar</span><button class="icon-btn" id="reset-windows" aria-label="Reorganizar ferramentas" title="Reorganizar ferramentas">↺</button></div>
-      </section>
-
-      <section class="workspace-stage workspace-stage-full" id="workspace-stage" aria-label="Espaço para organizar suas ferramentas">
-        <div class="stage-grid" aria-hidden="true"></div>
-        <div class="stage-sun" aria-hidden="true"><span></span></div>
-        <div class="stage-label"><span class="signal-dot"></span> espaço ativo <small>04 ferramentas em órbita</small></div>
-        <div class="stage-coordinates">X 07.42 <span>·</span> Y 13.09 <span>·</span> Z 00.81</div>
-        <div class="window-layer" id="window-layer"></div>
-        <div class="empty-workspace" id="empty-workspace" hidden><span>✦</span><strong>Seu espaço está vazio</strong><p>Lance uma ferramenta abaixo para começar.</p></div>
-      </section>
-
-      <section class="tools-launch" id="tools-launch" aria-label="Lançar ferramenta">
-        <div class="launch-title"><span class="eyebrow">LANÇAR FERRAMENTA</span><small>Abra quantas precisar</small></div>
-        <div class="launch-actions">
-          <button class="launch-chip" data-open-tool="todo"><span class="launch-icon cyan">✓</span> Tarefas</button>
-          <button class="launch-chip" data-open-tool="pomodoro"><span class="launch-icon coral">◷</span> Pomodoro</button>
-          <button class="launch-chip" data-open-tool="notes"><span class="launch-icon purple">✎</span> Notas</button>
-          <button class="launch-chip" data-open-tool="calculator"><span class="launch-icon gold">＋</span> Calculadora</button>
+    <main id="inicio">
+      <section class="landing-hero">
+        <div class="hero-copy landing-hero-copy">
+          <div class="eyebrow"><span class="spark">✦</span> UM UNIVERSO FEITO PARA O SEU FOCO <span class="live-pill"><b></b> ao vivo</span></div>
+          <h1>Estudar pode ser<br><em>outro universo.</em></h1>
+          <p>O espaço de trabalho que transforma tarefas, ideias e tempo de foco em uma órbita só. Simples, bonito e feito para funcionar no seu ritmo.</p>
+          <div class="hero-actions"><a class="primary-btn hero-button" href="#workspace">Explorar meu espaço <span>↗</span></a><a class="text-link" href="#como-funciona">Descobrir como funciona <span>↓</span></a></div>
+          <div class="hero-proof"><span class="proof-avatars"><i>✦</i><i>◒</i><i>◷</i></span><span>feito para mentes curiosas</span><span class="proof-separator">·</span><span>sem cadastro</span></div>
         </div>
+        <div class="hero-universe" aria-label="Ilustração do universo de estudos">
+          <div class="hero-planet planet-large"><span></span></div>
+          <div class="hero-orbit-path path-one"></div><div class="hero-orbit-path path-two"></div><div class="hero-orbit-path path-three"></div>
+          <div class="hero-satellite satellite-one">◷</div><div class="hero-satellite satellite-two">✦</div><div class="hero-satellite satellite-three">✓</div>
+          <div class="hero-label label-focus"><b>25:00</b><small>foco em curso</small></div>
+          <div class="hero-label label-missions"><b>∞</b><small>ideias em órbita</small></div>
+          <span class="universe-coordinate">UNV / 01.04.26</span>
+        </div>
+      </section>
+
+      <section class="landing-signal" aria-label="Destaques do Universyn"><div><strong>4</strong><span>ferramentas em um só lugar</span></div><div><strong>∞</strong><span>espaço para suas ideias</span></div><div><strong>0</strong><span>cadastros para começar</span></div><div class="signal-line"></div></section>
+
+      <section class="benefits-section" id="como-funciona">
+        <div class="section-intro"><span class="eyebrow">COMO FUNCIONA</span><h2>Menos ruído.<br><em>Mais órbita.</em></h2><p>Um lugar para tirar o peso da cabeça e deixar o estudo fluir.</p></div>
+        <div class="benefit-grid">
+          <article class="benefit-card"><span class="benefit-number">01</span><span class="benefit-icon cyan">◒</span><h3>Organize o caos</h3><p>Transforme pendências em missões claras e veja o que importa agora.</p><span class="benefit-line"></span></article>
+          <article class="benefit-card featured-benefit"><span class="benefit-number">02</span><span class="benefit-icon coral">◷</span><h3>Encontre seu ritmo</h3><p>Use ciclos de foco que respeitam sua energia, não o contrário.</p><span class="benefit-line"></span></article>
+          <article class="benefit-card"><span class="benefit-number">03</span><span class="benefit-icon purple">✦</span><h3>Crie seu universo</h3><p>Arraste as ferramentas pelo espaço e monte o ambiente que funciona para você.</p><span class="benefit-line"></span></article>
+        </div>
+      </section>
+
+      <section class="workspace-landing-section" id="workspace">
+        <div class="section-heading workspace-heading"><div><span class="eyebrow">SEU UNIVERSO DE TAREFAS</span><h2>O espaço é seu.</h2><p class="section-subtitle">Lance uma ferramenta. Mova. Concentre-se.</p></div><div class="workspace-tools"><span class="drag-hint"><span class="drag-cursor">✣</span> arraste as janelas</span><button class="icon-btn" id="reset-windows" aria-label="Reorganizar ferramentas" title="Reorganizar ferramentas">↺</button></div></div>
+        <div class="workspace-stage workspace-stage-landing" id="workspace-stage" aria-label="Área espacial para organizar suas ferramentas">
+          <div class="stage-grid" aria-hidden="true"></div><div class="stage-sun" aria-hidden="true"><span></span></div>
+          <div class="stage-label"><span class="signal-dot"></span> espaço ativo <small>ferramentas em órbita</small></div><div class="stage-coordinates">X 07.42 <span>·</span> Y 13.09 <span>·</span> Z 00.81</div>
+          <div class="window-layer" id="window-layer"></div><div class="empty-workspace" id="empty-workspace" hidden><span>✦</span><strong>Seu espaço está vazio</strong><p>Lance uma ferramenta abaixo para começar.</p></div>
+        </div>
+        <div class="workspace-launch-row" id="ferramentas"><div class="launch-title"><span class="eyebrow">LANÇAR FERRAMENTA</span><small>Abra quantas precisar</small></div><div class="launch-actions"><button class="launch-chip" data-open-tool="todo"><span class="launch-icon cyan">✓</span> Tarefas</button><button class="launch-chip" data-open-tool="pomodoro"><span class="launch-icon coral">◷</span> Pomodoro</button><button class="launch-chip" data-open-tool="notes"><span class="launch-icon purple">✎</span> Notas</button><button class="launch-chip" data-open-tool="calculator"><span class="launch-icon gold">＋</span> Calculadora</button><button class="launch-chip" data-open-tool="stopwatch"><span class="launch-icon cyan">◉</span> Cronômetro</button><button class="launch-chip" data-open-tool="flashcards"><span class="launch-icon coral">▣</span> Flashcards</button><button class="launch-chip" data-open-tool="converter"><span class="launch-icon purple">⇄</span> Conversor</button><button class="launch-chip" data-open-tool="randomizer"><span class="launch-icon gold">✣</span> Sorteador</button><button class="launch-chip launch-chip-browser" data-open-tool="browser"><span class="launch-icon cyan">⌁</span> Mini navegador</button></div></div>
         <div class="window-dock" id="window-dock" aria-label="Ferramentas minimizadas"></div>
       </section>
+
+      <section class="final-cta"><div class="cta-orbit" aria-hidden="true"><span></span><i></i><b></b></div><div><span class="eyebrow">PRONTO PARA DECOLAR?</span><h2>Seu próximo foco<br><em>começa aqui.</em></h2></div><a class="primary-btn" href="#workspace">Abrir meu espaço <span>↗</span></a></section>
     </main>
+    <footer><span class="footer-mark">✦</span> Universyn <span>·</span> Cada mente é um universo.</footer>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
