@@ -185,7 +185,10 @@ function focusWindow(windowElement) {
 
 function updateEmptyState() {
   const empty = $('#empty-workspace');
-  if (empty) empty.hidden = state.openWindows.size > 0;
+  if (!empty) return;
+  const hasWindows = state.openWindows.size > 0;
+  empty.hidden = hasWindows;
+  empty.style.display = hasWindows ? 'none' : 'flex';
 }
 
 function updateDock() {

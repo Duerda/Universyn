@@ -584,3 +584,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @keyframes planet-drift { from { transform:translate3d(-5px,3px,0); } to { transform:translate3d(8px,-6px,0); } }
 @media(max-width:980px){.tool-preview-grid{grid-template-columns:repeat(3,1fr)}.workspace-shell{width:min(100% - 38px,900px)}.workspace-stage-full{height:620px}.workspace-nav-meta{margin-left:auto}}
 @media(max-width:650px){.tools-preview-section{padding-left:3px;padding-right:3px;padding-bottom:95px}.tools-preview-heading{align-items:start;flex-direction:column}.tools-preview-heading h2{font-size:31px}.tool-preview-grid{grid-template-columns:repeat(2,1fr)}.workspace-shell{width:calc(100% - 28px)}.workspace-nav{height:70px}.workspace-nav-meta{display:none}.back-link{font-size:9px}.workspace-page-main{padding-top:35px}.workspace-only h1{font-size:39px}.workspace-stage-full{height:645px;min-height:645px}.workspace-only .workspace-launch-row{margin-top:10px}.workspace-only .launch-actions{gap:6px}}
+
+/* The empty state must honor the native hidden attribute. */
+[hidden] { display: none !important; }
