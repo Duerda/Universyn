@@ -403,11 +403,10 @@ function bindNavigation() {
 }
 
 function init() {
-  const now = new Date();
-  const date = $('#current-date');
-  if (date) date.textContent = now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' });
   updateCount();
   bindNavigation();
+  const stage = $('#workspace-stage');
+  if (!stage) return;
   $$('[data-open-tool]').forEach((button) => button.addEventListener('click', () => openTool(button.dataset.openTool)));
   const resetWindowsButton = $('#reset-windows'); if (resetWindowsButton) resetWindowsButton.addEventListener('click', resetWindows);
   const resetData = $('#reset-data');
