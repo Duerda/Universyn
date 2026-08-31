@@ -369,7 +369,7 @@ function init() {
 
   $$('[data-open-tool]').forEach((button) => button.addEventListener('click', () => openTool(button.dataset.openTool)));
   $('#reset-windows').addEventListener('click', resetWindows);
-  $('#add-event').addEventListener('click', () => toast('Agenda inteligente em breve'));
+  const addEvent = $('#add-event'); if (addEvent) addEvent.addEventListener('click', () => toast('Agenda inteligente em breve'));
   $('#reset-data').addEventListener('click', () => {
     if (!confirm('Limpar tarefas e notas salvas?')) return;
     state.todos = [];
@@ -381,7 +381,7 @@ function init() {
     if (notesWindow) $('#notes-input', notesWindow).value = '';
     toast('Dados locais limpos');
   });
-  $('#tool-search').addEventListener('input', (event) => {
+  const toolSearch = $('#tool-search'); if (toolSearch) toolSearch.addEventListener('input', (event) => {
     const query = event.target.value.toLowerCase();
     $$('[data-tool-card]').forEach((card) => {
       card.style.display = card.dataset.name.includes(query) ? 'flex' : 'none';
