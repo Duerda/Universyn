@@ -1,38 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universyn - Seu Universo de Estudo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-      <link href="style.css" rel="stylesheet">
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <title>Universyn — Seu universo de estudos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Partículas de fundo -->
-    <div class="particles" id="particles"></div>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Universyn início"><span class="brand-mark">U</span><span>universyn</span></a>
+      <div class="sidebar-label">Seu espaço</div>
+      <nav class="nav-list">
+        <a class="nav-link active" href="#inicio"><span class="nav-icon">⌂</span> Visão geral</a>
+        <a class="nav-link" href="#ferramentas"><span class="nav-icon">✦</span> Ferramentas</a>
+        <a class="nav-link" href="#foco"><span class="nav-icon">◷</span> Foco</a>
+        <a class="nav-link" href="#agenda"><span class="nav-icon">▣</span> Agenda</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-card"><span class="status-dot"></span><div><strong>Modo estudante</strong><small>Seu progresso está salvo</small></div></div>
+        <button class="nav-link ghost" id="reset-data"><span class="nav-icon">↻</span> Limpar dados</button>
+      </div>
+    </aside>
 
-    <!-- Header -->
-    <div class="header">
-        <div class="logo">UNIVERSYN</div>
-        <div class="controls">
-            <button class="control-btn" onclick="resetGalaxy()">Reset Galáxia</button>
-            <button class="control-btn" onclick="toggleAnimations()">Animações</button>
-            <button class="control-btn" onclick="addPlanet()">+ Planeta</button>
-        </div>
-    </div>
+    <main class="main-content" id="inicio">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Abrir menu">☰</button>
+        <div class="breadcrumb">Universyn <span>/</span> Visão geral</div>
+        <div class="top-actions"><span class="date-label" id="current-date"></span><button class="avatar" aria-label="Perfil">JD</button></div>
+      </header>
 
-    <!-- Galáxia -->
-    <div class="galaxy" id="galaxy">
-        <!-- Planetas serão inseridos aqui -->
-    </div>
+      <section class="hero-section">
+        <div class="hero-copy"><div class="eyebrow"><span class="spark">✦</span> UM UNIVERSO FEITO PARA VOCÊ</div><h1>Olá, João.<br><em>Vamos estudar?</em></h1><p>Organize suas ideias, encontre seu ritmo e transforme cada sessão em progresso.</p><div class="hero-actions"><button class="primary-btn" data-open-tool="pomodoro">Começar sessão <span>→</span></button><a class="text-link" href="#ferramentas">Explorar ferramentas</a></div></div>
+        <div class="orbital-card" aria-label="Resumo do progresso"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbital-core"><strong>68%</strong><span>da meta semanal</span></div><div class="orbit-label label-top">+12% <small>esta semana</small></div><div class="orbit-label label-bottom">4h 20m <small>de foco</small></div></div>
+      </section>
 
-    <!-- Menu contextual -->
-    <div class="context-menu" id="contextMenu" style="display: none;">
-        <div class="context-menu-item" onclick="openTool()">Abrir Ferramenta</div>
-        <div class="context-menu-item" onclick="changeColor()">Mudar Cor</div>
-        <div class="context-menu-item" onclick="removePlanet()">Remover</div>
-    </div>
-    <script src="script.js"></script>
+      <section class="stats-grid" aria-label="Resumo dos estudos">
+        <article class="stat-card"><div class="stat-icon violet">◷</div><div><span>Tempo de foco</span><strong>4h 20m</strong><small class="positive">↑ 18% esta semana</small></div></article>
+        <article class="stat-card"><div class="stat-icon blue">✓</div><div><span>Tarefas concluídas</span><strong id="completed-count">12</strong><small>de 18 planejadas</small></div></article>
+        <article class="stat-card"><div class="stat-icon orange">⌁</div><div><span>Sequência atual</span><strong>5 dias</strong><small class="positive">Seu melhor: 8 dias</small></div></article>
+      </section>
+
+      <section class="section-heading" id="ferramentas"><div><span class="eyebrow">CENTRAL DE ESTUDOS</span><h2>Suas ferramentas</h2></div><div class="search-wrap"><span>⌕</span><input id="tool-search" type="search" placeholder="Buscar ferramenta" aria-label="Buscar ferramenta"></div></section>
+      <section class="tools-grid" id="tools-grid">
+        <article class="tool-card featured" data-tool-card data-name="pomodoro foco"><div class="tool-top"><span class="tool-symbol coral">◷</span><span class="card-arrow">↗</span></div><h3>Pomodoro</h3><p>Blocos de foco para estudar sem perder o ritmo.</p><button class="tool-link" data-open-tool="pomodoro">Abrir ferramenta <span>→</span></button></article>
+        <article class="tool-card" data-tool-card data-name="tarefas to do lista"><div class="tool-top"><span class="tool-symbol cyan">✓</span><span class="card-arrow">↗</span></div><h3>Lista de tarefas</h3><p>Tire as pendências da cabeça e coloque no papel.</p><button class="tool-link" data-open-tool="todo">Abrir ferramenta <span>→</span></button></article>
+        <article class="tool-card" data-tool-card data-name="notas anotacoes"><div class="tool-top"><span class="tool-symbol purple">✎</span><span class="card-arrow">↗</span></div><h3>Notas rápidas</h3><p>Capture aquela ideia antes que ela escape.</p><button class="tool-link" data-open-tool="notes">Abrir ferramenta <span>→</span></button></article>
+        <article class="tool-card" data-tool-card data-name="calculadora calculo"><div class="tool-top"><span class="tool-symbol gold">＋</span><span class="card-arrow">↗</span></div><h3>Calculadora</h3><p>Resolva contas com agilidade durante seus estudos.</p><button class="tool-link" data-open-tool="calculator">Abrir ferramenta <span>→</span></button></article>
+      </section>
+
+      <section class="bottom-grid" id="foco">
+        <article class="quote-card"><span class="quote-mark">“</span><p>Pequenos passos todos os dias ainda te levam para muito longe.</p><span class="quote-author">— James Clear</span></article>
+        <article class="agenda-card" id="agenda"><div class="section-heading compact"><div><span class="eyebrow">PRÓXIMO PASSO</span><h2>Sua agenda</h2></div><button class="icon-btn" id="add-event" aria-label="Adicionar compromisso">＋</button></div><div class="agenda-item"><span class="agenda-time">14:00</span><div class="agenda-line blue-line"></div><div><strong>Revisão de matemática</strong><small>Hoje · 45 minutos</small></div></div><div class="agenda-item"><span class="agenda-time">16:30</span><div class="agenda-line purple-line"></div><div><strong>Leitura — capítulo 04</strong><small>Hoje · 30 minutos</small></div></div></article>
+      </section>
+      <footer>Universyn <span>·</span> Cada mente é um universo.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="modal-backdrop" id="modal-backdrop" hidden><section class="tool-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><div><span class="eyebrow">ESPAÇO DE ESTUDO</span><h2 id="modal-title">Ferramenta</h2></div><button class="close-modal" id="close-modal" aria-label="Fechar">×</button></div><div class="modal-body" id="modal-body"></div></section></div>
+  <script src="script.js"></script>
 </body>
 </html>
