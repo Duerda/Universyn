@@ -120,3 +120,5 @@ body.is-resizing .tool-window { transition: none; }
 /* Workspace ampliado e puxador superior do mini navegador */
 .workspace-stage{height:calc(100vh - 230px);min-height:650px;max-height:none}.tool-window:has(.browser-form) .window-resize-handle[data-resize-handle="top-right"]{top:4px;right:42px;bottom:auto;width:30px;height:30px;z-index:12;cursor:nesw-resize;display:grid;place-items:center;color:var(--cyan);font:17px var(--pixel);line-height:1;background:rgba(98,233,229,.12);border:2px solid var(--cyan);text-shadow:2px 2px 0 #1d2760}.tool-window:has(.browser-form) .window-resize-handle[data-resize-handle="top-right"]:hover{background:var(--cyan);color:var(--bg)}
 @media(max-width:680px){.workspace-stage{height:calc(100vh - 190px);min-height:620px}.tool-window:has(.browser-form) .window-resize-handle[data-resize-handle="top-right"]{right:42px;width:28px;height:28px}}
+
+.browser-status.is-warning{color:var(--yellow)}.browser-status.is-warning .signal-dot{background:var(--yellow);box-shadow:none}

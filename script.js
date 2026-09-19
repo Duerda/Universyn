@@ -457,6 +457,7 @@ function bindBrowser(windowElement) {
   const copy = $('#browser-copy', windowElement);
   let history = [];
   let historyIndex = -1;
+  let loadTimer = null;
   const updateControls = () => {
     back.disabled = historyIndex <= 0;
     forward.disabled = historyIndex < 0 || historyIndex >= history.length - 1;
@@ -475,9 +476,11 @@ function bindBrowser(windowElement) {
     }
     updateControls();
     setStatus('carregando órbita...', 'is-loading');
-    frameWrap.innerHTML = `<iframe class="browser-frame" title="Site flutuante" src="${escapeHtml(url)}" loading="eager" referrerpolicy="no-referrer-when-downgrade" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe><small class="browser-note">Se a página bloquear incorporação, use “Abrir fora ↗” para acessar o site completo.</small>`;
+    clearTimeout(loadTimer);
+    frameWrap.innerHTML = `<iframe class="browser-frame" title="Site flutuante" src="${escapeHtml(url)}" loading="eager" referrerpolicy="no-referrer-when-downgrade" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe><small class="browser-note">Se a página bloquear a incorporação, use “Abrir fora ↗” para acessar o site completo.</small>`;
     const frame = $('.browser-frame', frameWrap);
-    frame.addEventListener('load', () => setStatus('órbita carregada', 'is-ready'), { once: true });
+    frame.addEventListener('load', () => { clearTimeout(loadTimer); setStatus('órbita carregada — se o conteúdo não aparecer, use “Abrir fora ↗”', 'is-ready'); }, { once: true });
+    loadTimer = setTimeout(() => setStatus('o site pode bloquear incorporação — use “Abrir fora ↗”', 'is-warning'), 7000);
     updateControls();
   };
   const openInput = (value) => {
