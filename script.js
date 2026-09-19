@@ -97,7 +97,7 @@ function normalizeBrowserUrl(rawValue) {
   const hostname = url.hostname.toLowerCase().replace(/^www\./, '');
   let videoId = '';
   if (hostname === 'youtu.be') videoId = url.pathname.split('/').filter(Boolean)[0] || '';
-  if (hostname === 'youtube.com' || hostname === 'youtube-nocookie.com') {
+  if (hostname === 'youtube.com' || hostname.endsWith('.youtube.com') || hostname === 'youtube-nocookie.com') {
     videoId = url.searchParams.get('v') || '';
     const pathParts = url.pathname.split('/').filter(Boolean);
     if (!videoId && ['shorts', 'embed', 'live'].includes(pathParts[0])) videoId = pathParts[1] || '';
@@ -485,7 +485,9 @@ function bindBrowser(windowElement) {
   };
   const openInput = (value) => {
     try {
-      renderFrame(normalizeBrowserUrl(value));
+      const normalizedUrl = normalizeBrowserUrl(value);
+      input.value = normalizedUrl;
+      renderFrame(normalizedUrl);
     } catch { toast('Digite um endereço ou busca válida'); setStatus('endereço inválido', 'is-error'); }
   };
   form.addEventListener('submit', (event) => {
