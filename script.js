@@ -113,7 +113,7 @@ function toolMarkup(type) {
   }
 
   if (type === 'browser') {
-    return `<div class="window-kicker">Digite um site e lance uma nova órbita no seu espaço.</div><form class="browser-form" id="browser-form"><input class="field" id="browser-url" type="url" placeholder="https://exemplo.com" inputmode="url" autocomplete="url"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><p>A página aparecerá aqui.</p></div></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Nova aba ↗</button></div><span class="window-resize-handle" data-resize-handle aria-label="Redimensionar mini navegador" title="Arraste para redimensionar"></span>`;
+    return `<div class="window-kicker">Pesquise, consulte referências e mantenha uma órbita aberta sem sair do seu espaço.</div><form class="browser-form" id="browser-form"><button type="button" class="browser-nav-btn" id="browser-back" aria-label="Voltar" title="Voltar">←</button><button type="button" class="browser-nav-btn" id="browser-forward" aria-label="Avançar" title="Avançar">→</button><input class="field" id="browser-url" type="text" placeholder="Digite um site ou uma busca..." inputmode="url" autocomplete="url" spellcheck="false"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-quick-links" aria-label="Atalhos rápidos"><button type="button" data-browser-url="https://www.google.com">Google</button><button type="button" data-browser-url="https://wikipedia.org">Wikipedia</button><button type="button" data-browser-url="https://developer.mozilla.org">MDN</button></div><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><strong>Seu mini navegador</strong><p>Abra um endereço ou escolha um atalho para começar.</p></div></div><div class="browser-status" id="browser-status" role="status"><span class="signal-dot"></span><span>pronto para navegar</span></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">↻ Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Abrir fora ↗</button><button type="button" class="secondary-btn" id="browser-copy">Copiar endereço</button></div><span class="window-resize-handle" data-resize-handle aria-label="Redimensionar mini navegador" title="Arraste para redimensionar"></span>`;
   }
 
   return `<div class="window-kicker">Jogue suas opções no espaço e deixe o acaso decidir.</div><textarea class="field randomizer-input" id="randomizer-input" placeholder="Uma opção por linha...">Estudar 25 minutos\nFazer uma pausa\nRevisar anotações</textarea><button class="modal-btn randomize-btn" id="randomize-btn">Sortear agora ✦</button><div class="randomizer-result" id="randomizer-result">?</div>`;
@@ -407,29 +407,63 @@ function bindBrowser(windowElement) {
   const form = $('#browser-form', windowElement);
   const input = $('#browser-url', windowElement);
   const frameWrap = $('#browser-frame-wrap', windowElement);
+  const status = $('#browser-status', windowElement);
   const reload = $('#browser-reload', windowElement);
   const newTab = $('#browser-new-tab', windowElement);
-  let currentUrl = '';
-  const renderFrame = (url) => {
-    currentUrl = url;
-    frameWrap.innerHTML = `<iframe class="browser-frame" title="Site flutuante" src="${escapeHtml(url)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><small class="browser-note">Se o site bloquear a incorporação, use “Nova aba ↗”.</small>`;
+  const back = $('#browser-back', windowElement);
+  const forward = $('#browser-forward', windowElement);
+  const copy = $('#browser-copy', windowElement);
+  const quickLinks = $$('[data-browser-url]', windowElement);
+  let history = [];
+  let historyIndex = -1;
+  const updateControls = () => {
+    back.disabled = historyIndex <= 0;
+    forward.disabled = historyIndex < 0 || historyIndex >= history.length - 1;
+    const current = history[historyIndex];
+    input.value = current || '';
   };
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    let raw = input.value.trim();
+  const setStatus = (message, tone = '') => {
+    status.className = `browser-status ${tone}`;
+    status.innerHTML = `<span class="signal-dot"></span><span>${escapeHtml(message)}</span>`;
+  };
+  const renderFrame = (url, addToHistory = true) => {
+    if (addToHistory) {
+      history = history.slice(0, historyIndex + 1);
+      history.push(url);
+      historyIndex = history.length - 1;
+    }
+    updateControls();
+    setStatus('carregando órbita...', 'is-loading');
+    frameWrap.innerHTML = `<iframe class="browser-frame" title="Site flutuante" src="${escapeHtml(url)}" loading="eager" referrerpolicy="no-referrer-when-downgrade" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe><small class="browser-note">Se a página bloquear incorporação, use “Abrir fora ↗” para acessar o site completo.</small>`;
+    const frame = $('.browser-frame', frameWrap);
+    frame.addEventListener('load', () => setStatus('órbita carregada', 'is-ready'), { once: true });
+    updateControls();
+  };
+  const openInput = (value) => {
+    let raw = value.trim();
     if (!raw) return;
-    if (!/^https?:\/\//i.test(raw)) raw = `https://${raw}`;
+    if (!/^https?:\/\//i.test(raw)) {
+      const looksLikeDomain = /^(localhost(?::\d+)?|(?:www\.)?(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/?#].*)?$/i.test(raw);
+      raw = looksLikeDomain ? `https://${raw}` : `https://www.google.com/search?q=${encodeURIComponent(raw)}`;
+    }
     try {
       const url = new URL(raw);
       if (!['http:', 'https:'].includes(url.protocol)) throw new Error('protocol');
-      input.value = url.href;
       renderFrame(url.href);
-    } catch {
-      toast('Digite um endereço válido');
-    }
+    } catch { toast('Digite um endereço ou busca válida'); setStatus('endereço inválido', 'is-error'); }
+  };
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    openInput(input.value);
   });
-  reload.addEventListener('click', () => { if (currentUrl) renderFrame(currentUrl); });
-  newTab.addEventListener('click', () => { if (currentUrl) window.open(currentUrl, '_blank', 'noopener,noreferrer'); else toast('Abra um site primeiro'); });
+  quickLinks.forEach((button) => button.addEventListener('click', () => openInput(button.dataset.browserUrl)));
+  back.addEventListener('click', () => { if (historyIndex > 0) { historyIndex -= 1; renderFrame(history[historyIndex], false); } });
+  forward.addEventListener('click', () => { if (historyIndex < history.length - 1) { historyIndex += 1; renderFrame(history[historyIndex], false); } });
+  reload.addEventListener('click', () => { const current = history[historyIndex]; if (current) renderFrame(current, false); else toast('Abra um site primeiro'); });
+  newTab.addEventListener('click', () => { const current = history[historyIndex]; if (current) window.open(current, '_blank', 'noopener,noreferrer'); else toast('Abra um site primeiro'); });
+  copy.addEventListener('click', async () => { const current = history[historyIndex]; if (!current) { toast('Abra um site primeiro'); return; } try { await navigator.clipboard.writeText(current); toast('Endereço copiado'); } catch { input.select(); document.execCommand('copy'); toast('Endereço copiado'); } });
+  input.addEventListener('keydown', (event) => { if (event.key === 'Escape') { input.value = history[historyIndex] || ''; input.blur(); } });
+  updateControls();
 }
 
 function resetWindows() {
