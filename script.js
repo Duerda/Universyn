@@ -116,7 +116,7 @@ function toolMarkup(type) {
   }
 
   if (type === 'browser') {
-    return `<div class="window-kicker">Pesquise, consulte referências e mantenha uma órbita aberta sem sair do seu espaço.<br><span class="browser-resize-tip">↘ Arraste o canto inferior direito para aumentar ou diminuir largura e altura.</span></div><form class="browser-form" id="browser-form"><button type="button" class="browser-nav-btn" id="browser-back" aria-label="Voltar" title="Voltar">←</button><button type="button" class="browser-nav-btn" id="browser-forward" aria-label="Avançar" title="Avançar">→</button><input class="field" id="browser-url" type="text" placeholder="Digite um site ou uma busca..." inputmode="url" autocomplete="url" spellcheck="false"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-quick-links" aria-label="Atalhos rápidos"><button type="button" data-browser-url="https://www.google.com">Google</button><button type="button" data-browser-url="https://wikipedia.org">Wikipedia</button><button type="button" data-browser-url="https://developer.mozilla.org">MDN</button></div><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><strong>Seu mini navegador</strong><p>Abra um endereço ou escolha um atalho para começar.</p></div></div><div class="browser-status" id="browser-status" role="status"><span class="signal-dot"></span><span>pronto para navegar</span></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">↻ Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Abrir fora ↗</button><button type="button" class="secondary-btn" id="browser-copy">Copiar endereço</button></div><span class="window-resize-handle" data-resize-handle aria-label="Redimensionar largura e altura do mini navegador" title="Arraste para redimensionar largura e altura"></span>`;
+    return `<div class="window-kicker">Pesquise, consulte referências e mantenha uma órbita aberta sem sair do seu espaço.<br><span class="browser-resize-tip">↘ Arraste o canto inferior direito para aumentar ou diminuir largura e altura.</span></div><form class="browser-form" id="browser-form"><button type="button" class="browser-nav-btn" id="browser-back" aria-label="Voltar" title="Voltar">←</button><button type="button" class="browser-nav-btn" id="browser-forward" aria-label="Avançar" title="Avançar">→</button><input class="field" id="browser-url" type="text" placeholder="Digite um site ou uma busca..." inputmode="url" autocomplete="url" spellcheck="false"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><strong>Seu mini navegador</strong><p>Abra um endereço ou escolha uma busca para começar.</p></div></div><div class="browser-status" id="browser-status" role="status"><span class="signal-dot"></span><span>pronto para navegar</span></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">↻ Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Abrir fora ↗</button><button type="button" class="secondary-btn" id="browser-copy">Copiar endereço</button></div><span class="window-resize-handle" data-resize-handle aria-label="Redimensionar largura e altura do mini navegador" title="Arraste para redimensionar largura e altura">↘</span>`;
   }
 
   return `<div class="window-kicker">Jogue suas opções no espaço e deixe o acaso decidir.</div><textarea class="field randomizer-input" id="randomizer-input" placeholder="Uma opção por linha...">Estudar 25 minutos\nFazer uma pausa\nRevisar anotações</textarea><button class="modal-btn randomize-btn" id="randomize-btn">Sortear agora ✦</button><div class="randomizer-result" id="randomizer-result">?</div>`;
@@ -300,6 +300,15 @@ function bindResize(windowElement) {
   const handle = $('[data-resize-handle]', windowElement);
   if (!handle) return;
   let resize = null;
+  const move = (event) => {
+    if (!resize) return;
+    const minWidth = 270;
+    const minHeight = 230;
+    const width = Math.max(minWidth, resize.width + event.clientX - resize.startX);
+    const height = Math.max(minHeight, resize.height + event.clientY - resize.startY);
+    windowElement.style.width = `${width}px`;
+    windowElement.style.height = `${height}px`;
+  };
   handle.addEventListener('pointerdown', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -308,15 +317,8 @@ function bindResize(windowElement) {
     try { handle.setPointerCapture(event.pointerId); } catch { /* pointer capture can be unavailable */ }
     focusWindow(windowElement);
     document.body.classList.add('is-resizing');
-  });
-  handle.addEventListener('pointermove', (event) => {
-    if (!resize) return;
-    const minWidth = 270;
-    const minHeight = 230;
-    const width = Math.max(minWidth, resize.width + event.clientX - resize.startX);
-    const height = Math.max(minHeight, resize.height + event.clientY - resize.startY);
-    windowElement.style.width = `${width}px`;
-    windowElement.style.height = `${height}px`;
+    const frame = $('.browser-frame', windowElement);
+    if (frame) frame.style.pointerEvents = 'none';
   });
   const release = (event) => {
     if (!resize) return;
@@ -327,10 +329,13 @@ function bindResize(windowElement) {
       height: Math.round(windowElement.getBoundingClientRect().height),
     };
     save();
+    const frame = $('.browser-frame', windowElement);
+    if (frame) frame.style.pointerEvents = '';
     try { if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId); } catch { /* no-op */ }
   };
-  handle.addEventListener('pointerup', release);
-  handle.addEventListener('pointercancel', release);
+  document.addEventListener('pointermove', move);
+  document.addEventListener('pointerup', release);
+  document.addEventListener('pointercancel', release);
 }
 
 function renderTodos(windowElement = $('[data-window="todo"]')) {
@@ -426,7 +431,6 @@ function bindBrowser(windowElement) {
   const back = $('#browser-back', windowElement);
   const forward = $('#browser-forward', windowElement);
   const copy = $('#browser-copy', windowElement);
-  const quickLinks = $$('[data-browser-url]', windowElement);
   let history = [];
   let historyIndex = -1;
   const updateControls = () => {
@@ -469,7 +473,6 @@ function bindBrowser(windowElement) {
     event.preventDefault();
     openInput(input.value);
   });
-  quickLinks.forEach((button) => button.addEventListener('click', () => openInput(button.dataset.browserUrl)));
   back.addEventListener('click', () => { if (historyIndex > 0) { historyIndex -= 1; renderFrame(history[historyIndex], false); } });
   forward.addEventListener('click', () => { if (historyIndex < history.length - 1) { historyIndex += 1; renderFrame(history[historyIndex], false); } });
   reload.addEventListener('click', () => { const current = history[historyIndex]; if (current) renderFrame(current, false); else toast('Abra um site primeiro'); });
