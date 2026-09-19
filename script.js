@@ -85,6 +85,29 @@ function escapeHtml(text) {
   }[character]));
 }
 
+function normalizeBrowserUrl(rawValue) {
+  let raw = rawValue.trim();
+  if (!raw) return '';
+  if (!/^https?:\/\//i.test(raw)) {
+    const looksLikeDomain = /^(localhost(?::\d+)?|(?:www\.)?(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/?#].*)?$/i.test(raw);
+    raw = looksLikeDomain ? `https://${raw}` : `https://www.google.com/search?q=${encodeURIComponent(raw)}`;
+  }
+  const url = new URL(raw);
+  if (!['http:', 'https:'].includes(url.protocol)) throw new Error('protocol');
+  const hostname = url.hostname.toLowerCase().replace(/^www\./, '');
+  let videoId = '';
+  if (hostname === 'youtu.be') videoId = url.pathname.split('/').filter(Boolean)[0] || '';
+  if (hostname === 'youtube.com' || hostname === 'youtube-nocookie.com') {
+    videoId = url.searchParams.get('v') || '';
+    const pathParts = url.pathname.split('/').filter(Boolean);
+    if (!videoId && ['shorts', 'embed', 'live'].includes(pathParts[0])) videoId = pathParts[1] || '';
+  }
+  if (videoId) {
+    videoId = videoId.replace(/[^a-zA-Z0-9_-].*$/, '').slice(0, 20);
+    if (videoId.length >= 6) return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+  }
+  return url.href;
+}
 function toolMarkup(type) {
   if (type === 'todo') {
     return `<div class="window-kicker">Suas próximas missões, em ordem de lançamento.</div>
@@ -458,16 +481,8 @@ function bindBrowser(windowElement) {
     updateControls();
   };
   const openInput = (value) => {
-    let raw = value.trim();
-    if (!raw) return;
-    if (!/^https?:\/\//i.test(raw)) {
-      const looksLikeDomain = /^(localhost(?::\d+)?|(?:www\.)?(?:[a-z0-9-]+\.)+[a-z]{2,})(?:[/?#].*)?$/i.test(raw);
-      raw = looksLikeDomain ? `https://${raw}` : `https://www.google.com/search?q=${encodeURIComponent(raw)}`;
-    }
     try {
-      const url = new URL(raw);
-      if (!['http:', 'https:'].includes(url.protocol)) throw new Error('protocol');
-      renderFrame(url.href);
+      renderFrame(normalizeBrowserUrl(value));
     } catch { toast('Digite um endereço ou busca válida'); setStatus('endereço inválido', 'is-error'); }
   };
   form.addEventListener('submit', (event) => {
