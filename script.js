@@ -154,8 +154,15 @@ function openTool(type) {
   windowElement.style.left = `${position.left}px`;
   windowElement.style.top = `${position.top}px`;
   if (state.sizes[type]) {
-    windowElement.style.width = `${state.sizes[type].width}px`;
-    windowElement.style.height = `${state.sizes[type].height}px`;
+    const maxWidth = type === 'browser' ? 480 : 900;
+    const maxHeight = type === 'browser' ? 430 : 900;
+    const size = {
+      width: Math.min(Math.max(270, state.sizes[type].width), maxWidth),
+      height: Math.min(Math.max(230, state.sizes[type].height), maxHeight),
+    };
+    state.sizes[type] = size;
+    windowElement.style.width = `${size.width}px`;
+    windowElement.style.height = `${size.height}px`;
   }
   windowElement.style.zIndex = ++state.zIndex;
   windowElement.innerHTML = `<div class="window-bar" data-drag-handle><span class="window-symbol">${toolSymbols[type]}</span><strong class="window-title">${toolNames[type]}</strong><div class="window-controls"><button class="window-control" data-minimize aria-label="Minimizar ${toolNames[type]}">−</button><button class="window-control close" data-close aria-label="Fechar ${toolNames[type]}">×</button></div></div><div class="window-content">${toolMarkup(type)}</div>`;
@@ -480,9 +487,10 @@ function bindBrowser(windowElement) {
 
 function resetWindows() {
   state.positions = {};
+  state.sizes = {};
   save();
-  state.openWindows.forEach((windowElement, type) => { const position = getPosition(type); windowElement.style.left = `${position.left}px`; windowElement.style.top = `${position.top}px`; });
-  toast('Órbitas reorganizadas');
+  state.openWindows.forEach((windowElement, type) => { const position = getPosition(type); windowElement.style.left = `${position.left}px`; windowElement.style.top = `${position.top}px`; windowElement.style.removeProperty('width'); windowElement.style.removeProperty('height'); });
+  toast('Órbitas e tamanhos restaurados');
 }
 
 function bindNavigation() {
