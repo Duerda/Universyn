@@ -113,7 +113,7 @@ function toolMarkup(type) {
   }
 
   if (type === 'browser') {
-    return `<div class="window-kicker">Digite um site e lance uma nova órbita no seu espaço.</div><form class="browser-form" id="browser-form"><input class="field" id="browser-url" type="url" placeholder="https://exemplo.com" inputmode="url" autocomplete="url"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><p>A página aparecerá aqui.</p></div></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Nova aba ↗</button></div>`;
+    return `<div class="window-kicker">Digite um site e lance uma nova órbita no seu espaço.</div><form class="browser-form" id="browser-form"><input class="field" id="browser-url" type="url" placeholder="https://exemplo.com" inputmode="url" autocomplete="url"><button class="modal-btn" type="submit">Abrir</button></form><div class="browser-frame-wrap" id="browser-frame-wrap"><div class="browser-empty"><span>⌁</span><p>A página aparecerá aqui.</p></div></div><div class="browser-actions"><button type="button" class="secondary-btn" id="browser-reload">Recarregar</button><button type="button" class="secondary-btn" id="browser-new-tab">Nova aba ↗</button></div><span class="window-resize-handle" data-resize-handle aria-label="Redimensionar mini navegador" title="Arraste para redimensionar"></span>`;
   }
 
   return `<div class="window-kicker">Jogue suas opções no espaço e deixe o acaso decidir.</div><textarea class="field randomizer-input" id="randomizer-input" placeholder="Uma opção por linha...">Estudar 25 minutos\nFazer uma pausa\nRevisar anotações</textarea><button class="modal-btn randomize-btn" id="randomize-btn">Sortear agora ✦</button><div class="randomizer-result" id="randomizer-result">?</div>`;
@@ -245,7 +245,10 @@ function bindWindow(windowElement, type) {
   if (type === 'flashcards') bindFlashcards(windowElement);
   if (type === 'converter') bindConverter(windowElement);
   if (type === 'randomizer') bindRandomizer(windowElement);
-  if (type === 'browser') bindBrowser(windowElement);
+  if (type === 'browser') {
+    bindBrowser(windowElement);
+    bindResize(windowElement);
+  }
 }
 
 function bindDragging(windowElement) {
@@ -275,6 +278,42 @@ function bindDragging(windowElement) {
     save();
     drag = null;
     document.body.classList.remove('is-dragging');
+    try { if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId); } catch { /* no-op */ }
+  };
+  handle.addEventListener('pointerup', release);
+  handle.addEventListener('pointercancel', release);
+}
+
+function bindResize(windowElement) {
+  const handle = $('[data-resize-handle]', windowElement);
+  if (!handle) return;
+  let resize = null;
+  handle.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const rect = windowElement.getBoundingClientRect();
+    resize = { startX: event.clientX, startY: event.clientY, width: rect.width, height: rect.height };
+    try { handle.setPointerCapture(event.pointerId); } catch { /* pointer capture can be unavailable */ }
+    focusWindow(windowElement);
+    document.body.classList.add('is-resizing');
+  });
+  handle.addEventListener('pointermove', (event) => {
+    if (!resize) return;
+    const stageRect = $('#workspace-stage').getBoundingClientRect();
+    const windowRect = windowElement.getBoundingClientRect();
+    const minWidth = 270;
+    const minHeight = 230;
+    const maxWidth = Math.max(minWidth, stageRect.right - windowRect.left - 8);
+    const maxHeight = Math.max(minHeight, stageRect.bottom - windowRect.top - 8);
+    const width = Math.min(Math.max(minWidth, resize.width + event.clientX - resize.startX), maxWidth);
+    const height = Math.min(Math.max(minHeight, resize.height + event.clientY - resize.startY), maxHeight);
+    windowElement.style.width = `${width}px`;
+    windowElement.style.height = `${height}px`;
+  });
+  const release = (event) => {
+    if (!resize) return;
+    resize = null;
+    document.body.classList.remove('is-resizing');
     try { if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId); } catch { /* no-op */ }
   };
   handle.addEventListener('pointerup', release);

@@ -90,3 +90,12 @@
   .landing-page .benefits-section { text-align: center; }
   .landing-page .tools-preview-heading { align-items: center; text-align: center; }
 }
+
+
+/* The mini browser can be resized from its bottom-right corner. */
+.tool-window:has(.window-resize-handle) { min-width: 270px; min-height: 230px; }
+.window-resize-handle { position: absolute; right: 4px; bottom: 4px; width: 18px; height: 18px; z-index: 5; cursor: nwse-resize; background: linear-gradient(135deg, transparent 0 38%, var(--cyan) 39% 47%, transparent 48% 61%, var(--cyan) 62% 70%, transparent 71%); opacity: .85; }
+.window-resize-handle:hover { opacity: 1; background-color: rgba(98,233,229,.12); }
+body.is-resizing { user-select: none; cursor: nwse-resize; }
+body.is-resizing .tool-window { transition: none; }
+.browser-frame-wrap { min-height: 145px; }
