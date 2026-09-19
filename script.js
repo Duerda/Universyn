@@ -40,6 +40,7 @@ const defaultPositions = {
 const toolOrder = Object.keys(toolNames);
 const savedTodos = localStorage.getItem('universyn-todos');
 const savedWindowPositions = localStorage.getItem('universyn-window-positions');
+const savedWindowSizes = localStorage.getItem('universyn-window-sizes');
 const state = {
   todos: savedTodos ? JSON.parse(savedTodos) : [],
   notes: localStorage.getItem('universyn-notes') || '',
@@ -49,6 +50,7 @@ const state = {
   stopwatchTimer: null,
   openWindows: new Map(),
   positions: savedWindowPositions ? JSON.parse(savedWindowPositions) : {},
+  sizes: savedWindowSizes ? JSON.parse(savedWindowSizes) : {},
   zIndex: 10,
 };
 
@@ -56,6 +58,7 @@ function save() {
   localStorage.setItem('universyn-todos', JSON.stringify(state.todos));
   localStorage.setItem('universyn-notes', state.notes);
   localStorage.setItem('universyn-window-positions', JSON.stringify(state.positions));
+  localStorage.setItem('universyn-window-sizes', JSON.stringify(state.sizes));
   updateCount();
 }
 
@@ -150,6 +153,10 @@ function openTool(type) {
   windowElement.dataset.window = type;
   windowElement.style.left = `${position.left}px`;
   windowElement.style.top = `${position.top}px`;
+  if (state.sizes[type]) {
+    windowElement.style.width = `${state.sizes[type].width}px`;
+    windowElement.style.height = `${state.sizes[type].height}px`;
+  }
   windowElement.style.zIndex = ++state.zIndex;
   windowElement.innerHTML = `<div class="window-bar" data-drag-handle><span class="window-symbol">${toolSymbols[type]}</span><strong class="window-title">${toolNames[type]}</strong><div class="window-controls"><button class="window-control" data-minimize aria-label="Minimizar ${toolNames[type]}">−</button><button class="window-control close" data-close aria-label="Fechar ${toolNames[type]}">×</button></div></div><div class="window-content">${toolMarkup(type)}</div>`;
   $('#window-layer').appendChild(windowElement);
@@ -314,6 +321,11 @@ function bindResize(windowElement) {
     if (!resize) return;
     resize = null;
     document.body.classList.remove('is-resizing');
+    state.sizes[windowElement.dataset.window] = {
+      width: Math.round(windowElement.getBoundingClientRect().width),
+      height: Math.round(windowElement.getBoundingClientRect().height),
+    };
+    save();
     try { if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId); } catch { /* no-op */ }
   };
   handle.addEventListener('pointerup', release);
