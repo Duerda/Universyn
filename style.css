@@ -13,3 +13,80 @@
 @media(max-width:680px){.site-shell,.workspace-shell{width:calc(100% - 30px)}.landing-nav{height:70px}.landing-links,.nav-cta,.workspace-nav-meta{display:none}.mobile-menu{display:block}.landing-hero{padding:82px 0 70px}.landing-hero:after{display:none}.landing-hero h1{font-size:16px;line-height:1.8}.landing-hero>p{font-size:22px}.hero-actions{align-items:flex-start;flex-direction:column;gap:19px}.landing-signal{display:grid;grid-template-columns:1fr 1fr}.landing-signal>div{display:block;padding:15px}.landing-signal>div+div{border-left:3px solid var(--line)}.landing-signal>div:nth-child(3){grid-column:1/-1;border-left:0;border-top:3px solid var(--line)}.landing-signal span{display:block;margin-top:7px}.benefits-section{padding:90px 0}.benefit-grid{grid-template-columns:1fr}.benefit-card{min-height:180px}.benefit-icon{margin-top:25px}.tools-preview-section{padding-bottom:85px}.tools-preview-heading{align-items:flex-start;flex-direction:column;gap:18px}.tool-preview-grid{grid-template-columns:repeat(2,1fr)}.final-cta{align-items:flex-start;flex-direction:column;padding:24px}.workspace-page-main{padding-top:45px}.section-heading{align-items:flex-start;flex-direction:column}.workspace-tools{width:100%;justify-content:flex-end}.workspace-stage{height:660px;margin-top:22px}.stage-coordinates{display:none}.workspace-launch-row{align-items:flex-start;flex-direction:column;gap:14px}.launch-actions{width:100%}.launch-chip{flex:1 1 calc(50% - 7px);justify-content:flex-start}.tool-window{width:calc(100% - 24px)}.window-layer{overflow:hidden}.drag-hint{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.stars,.workspace-stage:before,.landing-hero:after{animation:none!important}*,*:before,*:after{transition-duration:.01ms!important}}
 [hidden]{display:none!important}
+
+
+/* Landing refinement: centered layout and clearer type */
+.landing-page .landing-nav { justify-content: center; gap: 44px; }
+.landing-page .landing-links { margin: 0; }
+.landing-page .brand { position: absolute; left: max(24px, calc((100% - 1160px) / 2)); }
+.landing-page .nav-cta { position: absolute; right: max(24px, calc((100% - 1160px) / 2)); }
+.landing-page .landing-hero { max-width: 820px; margin: 0 auto; padding-top: 126px; text-align: center; }
+.landing-page .landing-hero:after { right: 5%; }
+.landing-page .landing-hero h1 { max-width: 100%; color: #fff4a8; font-size: clamp(18px, 3vw, 27px); line-height: 1.85; text-shadow: 4px 4px 0 #7b3f82, 0 0 16px rgba(255,227,138,.16); }
+.landing-page .landing-hero > p { max-width: 620px; margin-left: auto; margin-right: auto; color: #e0e5f4; font-size: 27px; text-shadow: 2px 2px 0 #161c4c; }
+.landing-page .hero-actions { justify-content: center; }
+.landing-page .hero-proof { justify-content: center; color: #c6cee5; }
+.landing-page .landing-signal { max-width: 900px; margin-left: auto; margin-right: auto; }
+.landing-page .landing-signal span { color: #d5dced; }
+.landing-page .benefits-section { text-align: center; }
+.landing-page .section-intro { margin: 0 auto; }
+.landing-page .section-intro h2,
+.landing-page .tools-preview-heading h2,
+.landing-page .final-cta h2 { color: #fff4a8; text-shadow: 3px 3px 0 #7b3f82; }
+.landing-page .section-intro p { color: #d7deef; }
+.landing-page .benefit-grid { text-align: left; }
+.landing-page .tools-preview-heading { align-items: center; }
+.landing-page .final-cta { text-align: center; }
+.landing-page .final-cta > div { width: 100%; }
+.landing-page .final-cta { flex-direction: column; justify-content: center; }
+.landing-page .tool-preview-card small,
+.landing-page .benefit-card p { color: #cbd4e8; }
+
+@media (max-width: 680px) {
+  .landing-page .landing-nav { justify-content: space-between; gap: 0; }
+  .landing-page .brand { position: static; }
+  .landing-page .nav-cta { display: none; }
+  .landing-page .landing-hero { padding-top: 88px; }
+  .landing-page .landing-hero h1 { font-size: 17px; line-height: 1.9; }
+  .landing-page .landing-hero > p { font-size: 24px; }
+  .landing-page .benefits-section { text-align: center; }
+  .landing-page .tools-preview-heading { align-items: center; text-align: center; }
+}
+
+
+/* Landing refinement: centered layout and clearer type */
+.landing-page .landing-nav { justify-content: center; gap: 44px; }
+.landing-page .landing-links { margin: 0; }
+.landing-page .brand { position: absolute; left: max(24px, calc((100% - 1160px) / 2)); }
+.landing-page .nav-cta { position: absolute; right: max(24px, calc((100% - 1160px) / 2)); }
+.landing-page .landing-hero { max-width: 820px; margin: 0 auto; padding-top: 126px; text-align: center; }
+.landing-page .landing-hero:after { right: 5%; }
+.landing-page .landing-hero h1 { max-width: 100%; color: #fff4a8; font-size: clamp(18px, 3vw, 27px); line-height: 1.85; text-shadow: 4px 4px 0 #7b3f82, 0 0 16px rgba(255,227,138,.16); }
+.landing-page .landing-hero > p { max-width: 620px; margin-left: auto; margin-right: auto; color: #e0e5f4; font-size: 27px; text-shadow: 2px 2px 0 #161c4c; }
+.landing-page .hero-actions { justify-content: center; }
+.landing-page .hero-proof { justify-content: center; color: #c6cee5; }
+.landing-page .landing-signal { max-width: 900px; margin-left: auto; margin-right: auto; }
+.landing-page .landing-signal span { color: #d5dced; }
+.landing-page .benefits-section { text-align: center; }
+.landing-page .section-intro { margin: 0 auto; }
+.landing-page .section-intro h2,
+.landing-page .tools-preview-heading h2,
+.landing-page .final-cta h2 { color: #fff4a8; text-shadow: 3px 3px 0 #7b3f82; }
+.landing-page .section-intro p { color: #d7deef; }
+.landing-page .benefit-grid { text-align: left; }
+.landing-page .tools-preview-heading { align-items: center; }
+.landing-page .final-cta { flex-direction: column; justify-content: center; text-align: center; }
+.landing-page .final-cta > div { width: 100%; }
+.landing-page .tool-preview-card small,
+.landing-page .benefit-card p { color: #cbd4e8; }
+
+@media (max-width: 680px) {
+  .landing-page .landing-nav { justify-content: space-between; gap: 0; }
+  .landing-page .brand { position: static; }
+  .landing-page .nav-cta { display: none; }
+  .landing-page .landing-hero { padding-top: 88px; }
+  .landing-page .landing-hero h1 { font-size: 17px; line-height: 1.9; }
+  .landing-page .landing-hero > p { font-size: 24px; }
+  .landing-page .benefits-section { text-align: center; }
+  .landing-page .tools-preview-heading { align-items: center; text-align: center; }
+}
