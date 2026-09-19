@@ -106,6 +106,18 @@ function normalizeBrowserUrl(rawValue) {
     videoId = videoId.replace(/[^a-zA-Z0-9_-].*$/, '').slice(0, 20);
     if (videoId.length >= 6) return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
   }
+  if (hostname === 'phet.colorado.edu') {
+    const phetMatch = url.pathname.match(/^(\/sims\/html\/[^/]+\/[^/]+\/[^/]+)_([^/]+)\.html$/i);
+    if (phetMatch && !phetMatch[2].includes('iframe')) return `${url.origin}${phetMatch[1]}_${phetMatch[2]}-iframe.html`;
+  }
+  if (hostname === 'geogebra.org' || hostname === 'www.geogebra.org') {
+    const materialId = url.pathname.match(/^\/m\/([^/]+)/i)?.[1] || url.pathname.match(/^\/material\/show\/id\/([^/]+)/i)?.[1];
+    if (materialId) return `https://www.geogebra.org/material/iframe/id/${encodeURIComponent(materialId)}/width/900/height/600/border/888888/rc/true/ai/false`;
+  }
+  if (hostname === 'desmos.com' || hostname === 'www.desmos.com') {
+    const calculatorMatch = url.pathname.match(/^\/(calculator|3d|geometry|scientific)\/([^/]+)/i);
+    if (calculatorMatch) return `https://www.desmos.com/${calculatorMatch[1]}/${calculatorMatch[2]}`;
+  }
   return url.href;
 }
 function toolMarkup(type) {
