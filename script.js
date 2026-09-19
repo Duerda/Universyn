@@ -154,11 +154,9 @@ function openTool(type) {
   windowElement.style.left = `${position.left}px`;
   windowElement.style.top = `${position.top}px`;
   if (state.sizes[type]) {
-    const maxWidth = type === 'browser' ? 480 : 900;
-    const maxHeight = type === 'browser' ? 430 : 900;
     const size = {
-      width: Math.min(Math.max(270, state.sizes[type].width), maxWidth),
-      height: Math.min(Math.max(230, state.sizes[type].height), maxHeight),
+      width: Math.max(270, state.sizes[type].width),
+      height: Math.max(230, state.sizes[type].height),
     };
     state.sizes[type] = size;
     windowElement.style.width = `${size.width}px`;
@@ -313,14 +311,10 @@ function bindResize(windowElement) {
   });
   handle.addEventListener('pointermove', (event) => {
     if (!resize) return;
-    const stageRect = $('#workspace-stage').getBoundingClientRect();
-    const windowRect = windowElement.getBoundingClientRect();
     const minWidth = 270;
     const minHeight = 230;
-    const maxWidth = Math.max(minWidth, stageRect.right - windowRect.left - 8);
-    const maxHeight = Math.max(minHeight, stageRect.bottom - windowRect.top - 8);
-    const width = Math.min(Math.max(minWidth, resize.width + event.clientX - resize.startX), maxWidth);
-    const height = Math.min(Math.max(minHeight, resize.height + event.clientY - resize.startY), maxHeight);
+    const width = Math.max(minWidth, resize.width + event.clientX - resize.startX);
+    const height = Math.max(minHeight, resize.height + event.clientY - resize.startY);
     windowElement.style.width = `${width}px`;
     windowElement.style.height = `${height}px`;
   });
